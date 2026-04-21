@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro;
+
 public class PrimeNumbers : MonoBehaviour
 {
     [SerializeField] int primeIndex = 0;
