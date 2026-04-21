@@ -912,6 +912,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Calculator
   numbers: {x: 6, y: 8, z: 0}
+  numbers2: {x: 0, y: 6, z: 10, w: 0}
 --- !u!4 &1803464132
 Transform:
   m_ObjectHideFlags: 0
