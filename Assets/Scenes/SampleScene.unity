@@ -1551,7 +1551,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Calculator
   pythagoreanNumbers: {x: 0, y: 0, z: 0}
-  tanSinCosAngle: {x: 0, y: 0, z: 0, w: 0}
+  tanSinCosAngle: {x: 0, y: 450, z: 0, w: 15}
+  forces:
+  - {x: -4, y: 30}
+  - {x: 4, y: 30}
+  - {x: 12, y: 60}
+  distanceAToB: 16
+  vector2s:
+  - {x: 1.5, y: 30}
+  - {x: 2, y: 20}
+  unknownLengthsForce: 45
+  weight: 20
+  friction: 1000
 --- !u!4 &1803464132
 Transform:
   m_ObjectHideFlags: 0

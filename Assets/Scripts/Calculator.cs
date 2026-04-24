@@ -1,9 +1,21 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Calculator : MonoBehaviour
 {
+    [Header("PythagoreanThearom")]
     [SerializeField] Vector3 pythagoreanNumbers;
+    [Header("TanSinCos")]
     [SerializeField] Vector4 tanSinCosAngle;
+    [Header("MomentJämnVikt")]
+    [SerializeField] Vector2[] forces;
+    [SerializeField] float distanceAToB;
+    [Header("Moment")]
+    [SerializeField] Vector2[] vector2s;
+    [SerializeField] float unknownLengthsForce;
+    [Header("Friction")]
+    [SerializeField] float weight;
+    [SerializeField] float friction;
 
     void Start()
     {
@@ -12,6 +24,9 @@ public class Calculator : MonoBehaviour
     {
         //Debug.Log(PythagoreanTheorem(numbers.x, numbers.y, numbers.z));
         Debug.Log(TanSinCos(tanSinCosAngle.x, tanSinCosAngle.y, tanSinCosAngle.z, tanSinCosAngle.w));
+        Debug.Log(MomentJämnvikt(forces, distanceAToB));
+        Debug.Log("Moment: " + Moment(vector2s, unknownLengthsForce));
+        Debug.Log("Friction: " + Friction(weight, friction));
     }
 
     public float PythagoreanTheorem(float a, float b, float c) // unknown variable is written as 0
@@ -73,15 +88,58 @@ public class Calculator : MonoBehaviour
         }
         else // not enough information
         {
+            Debug.Log("Not enough information given");
             return new Vector4(0, 0, 0, 0);
         }
 
     }
 
+    public Vector2 MomentJämnvikt(Vector2[] forces , float distanceToUnknown)
+    {
+        Vector2 totalForce = Vector2.zero;
+        float totalMass = 0;
+
+        foreach (Vector2 v in forces)
+        {
+            totalForce.y += v.x * v.y;
+            totalMass += v.y;
+        }
+
+        totalForce.y /= distanceToUnknown;
+
+        totalForce.x = totalMass - totalForce.y;
+
+        return totalForce;
+    }
+
+    public float Moment(Vector2[] values, float lengthForce)
+    {
+        float length = 0;
+        float totalForce = 0;
+        foreach (Vector2 item in values)
+        {
+            totalForce += item.x * item.y;
+        }
+
+        length = totalForce / lengthForce;
+
+        return length;
+    }
+
+    public float Friction(float weight, float friction)
+    {
+        float u = 0;
+
+        u = friction / weight;
+
+        return u;
+    }
+
     public void InputTextFieldTanSinCos(string input)
     {
+        string separator = input.ToSeparatedString(";");
         Debug.Log(TanSinCos(
-            int.Parse(input.Substring(input.LastIndexOf(';'))),
+            int.Parse(input.Substring(0, input[int.Parse(separator)])),
             4,
             0,
             0));
