@@ -4,8 +4,11 @@ using UnityEngine;
 public class Lådagram : MonoBehaviour
 {
     [SerializeField] float[] numbers;
+    [SerializeField] float scale = 1;
     [SerializeField] Transform medianPos;
     [SerializeField] Transform kvartil;
+    [SerializeField] Transform minstaVärde;
+    [SerializeField] Transform högstaVärde;
 
     float medianPosInArray;
     float nedreKvartilPosInArray;
@@ -18,9 +21,11 @@ public class Lådagram : MonoBehaviour
         övreKvartilPosInArray = medianPosInArray * 1.5f;
 
 
-        medianPos.position = new Vector3(GetMedian(numbers), medianPos.position.y, medianPos.position.z);
-        kvartil.position = new Vector3(GetKvartilAvstånd(), kvartil.position.y, kvartil.position.z);
-        kvartil.localScale = new Vector3(kvartil.localScale.x, GetKvartilAvstånd(), kvartil.localScale.z);
+        medianPos.position = new Vector3(GetMedian(numbers), medianPos.position.y, medianPos.position.z) / scale;
+        kvartil.position = new Vector3(GetKvartilAvstånd() / 2 + GetNedreKvartil(), kvartil.position.y, kvartil.position.z) / scale;
+        kvartil.localScale = new Vector3(kvartil.localScale.x, GetKvartilAvstånd(), kvartil.localScale.z) / scale;
+        minstaVärde.position = new Vector3(numbers[0], minstaVärde.position.y, minstaVärde.position.z) / scale;
+        högstaVärde.position = new Vector3(numbers[numbers.Length -1], högstaVärde.position.y, högstaVärde.position.z) / scale;
     }
 
     void Update()
