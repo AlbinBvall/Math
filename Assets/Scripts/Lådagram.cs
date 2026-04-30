@@ -1,4 +1,3 @@
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Lådagram : MonoBehaviour
@@ -16,30 +15,53 @@ public class Lådagram : MonoBehaviour
 
     void Start()
     {
-        medianPosInArray = numbers.Length / 2;
-        nedreKvartilPosInArray = medianPosInArray / 2;
-        övreKvartilPosInArray = medianPosInArray * 1.5f;
-
-
-        medianPos.position = new Vector3(GetMedian(numbers), medianPos.position.y, medianPos.position.z) / scale;
-        kvartil.position = new Vector3(GetKvartilAvstånd() / 2 + GetNedreKvartil(), kvartil.position.y, kvartil.position.z) / scale;
-        kvartil.localScale = new Vector3(kvartil.localScale.x, GetKvartilAvstånd(), kvartil.localScale.z) / scale;
-        minstaVärde.position = new Vector3(numbers[0], minstaVärde.position.y, minstaVärde.position.z) / scale;
-        högstaVärde.position = new Vector3(numbers[numbers.Length -1], högstaVärde.position.y, högstaVärde.position.z) / scale;
+        numbers = SortArray(numbers);
     }
 
     void Update()
     {
-        
+        medianPos.position = new Vector3(GetMedian(numbers), medianPos.position.y, medianPos.position.z) / scale;
+        kvartil.position = new Vector3(GetKvartilAvstånd(numbers) / 2 + GetNedreKvartil(numbers), kvartil.position.y, kvartil.position.z) / scale;
+        kvartil.localScale = new Vector3(kvartil.localScale.x, GetKvartilAvstånd(numbers), kvartil.localScale.z) / scale;
+        minstaVärde.position = new Vector3(numbers[0], minstaVärde.position.y, minstaVärde.position.z) / scale;
+        högstaVärde.position = new Vector3(numbers[numbers.Length - 1], högstaVärde.position.y, högstaVärde.position.z) / scale;
     }
 
-    float GetKvartilAvstånd()
+    public float[] SortArray(float[] numbers)
     {
-        return GetÖvreKvartil() - GetNedreKvartil();
+        for (int last = numbers.Length; last > 0; last--)
+        {
+            for (int i = 1; i < numbers.Length; i++)
+            {
+                if (numbers[i] < numbers[i - 1])
+                {
+                    (numbers[i - 1], numbers[i]) = (numbers[i], numbers[i - 1]);
+                }
+            }
+        }
+        return numbers;
     }
 
-    float GetNedreKvartil()
+    public bool IsSorted(float[] numbers)
     {
+        for (int i = 0; i < numbers.Length - 1; i++)
+        {
+            if (numbers[i] > numbers[i + 1])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public float GetKvartilAvstånd(float[] numbers)
+    {
+        return GetÖvreKvartil(numbers) - GetNedreKvartil(numbers);
+    }
+
+    public float GetNedreKvartil(float[] numbers)
+    {
+        nedreKvartilPosInArray = numbers.Length / 4;
         float nedreKvartil = 0;
 
         if (IsInt(nedreKvartilPosInArray))
@@ -57,8 +79,9 @@ public class Lådagram : MonoBehaviour
         return nedreKvartil;
     }
 
-    float GetÖvreKvartil()
+    public float GetÖvreKvartil(float[] numbers)
     {
+        övreKvartilPosInArray = numbers.Length / 2 * 1.5f;
         float övreKvartil = 0;
 
         if (IsInt(nedreKvartilPosInArray))
@@ -76,8 +99,9 @@ public class Lådagram : MonoBehaviour
         return övreKvartil;
     }
 
-    float GetMedian(float[] numbers)
+    public float GetMedian(float[] numbers)
     {
+        medianPosInArray = numbers.Length / 2;
         float median;
 
         if (IsInt(medianPosInArray))
@@ -95,9 +119,9 @@ public class Lådagram : MonoBehaviour
         return median;
     }
 
-    bool IsInt(float myFloat)
+    public bool IsInt(float myFloat)
     {
-        return Mathf.Approximately(myFloat, Mathf.RoundToInt(myFloat));
+        return myFloat == (int) myFloat;
     }
 
 
