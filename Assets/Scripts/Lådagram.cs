@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System;
 
 public class Lådagram : MonoBehaviour
 {
@@ -12,20 +14,30 @@ public class Lådagram : MonoBehaviour
     float medianPosInArray;
     float nedreKvartilPosInArray;
     float övreKvartilPosInArray;
+    float timePassed;
+    float prevTime;
 
     void Start()
     {
-        numbers = SortArray(numbers);
+        DateTime prevTime = DateTime.Now;
+        SortArray(numbers);
+        DateTime currentTime = DateTime.Now;
+        TimeSpan duration = currentTime.Subtract(prevTime);
+        Debug.Log("Time Calculating: " + duration.TotalMilliseconds);
     }
 
     void Update()
-    {
+    {  
+
+
         medianPos.position = new Vector3(GetMedian(numbers), medianPos.position.y, medianPos.position.z) / scale;
         kvartil.position = new Vector3(GetKvartilAvstånd(numbers) / 2 + GetNedreKvartil(numbers), kvartil.position.y, kvartil.position.z) / scale;
         kvartil.localScale = new Vector3(kvartil.localScale.x, GetKvartilAvstånd(numbers), kvartil.localScale.z) / scale;
         minstaVärde.position = new Vector3(numbers[0], minstaVärde.position.y, minstaVärde.position.z) / scale;
-        högstaVärde.position = new Vector3(numbers[numbers.Length - 1], högstaVärde.position.y, högstaVärde.position.z) / scale;
+        högstaVärde.position = new Vector3(numbers[^1], högstaVärde.position.y, högstaVärde.position.z) / scale;
     }
+
+
 
     public float[] SortArray(float[] numbers)
     {
